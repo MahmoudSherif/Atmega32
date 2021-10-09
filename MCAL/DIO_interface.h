@@ -8,10 +8,10 @@
 #ifndef DIO_INTERFACE_H_
 #define DIO_INTERFACE_H_
 
-
-#include"AVR_DIO_REG.h"
-#include"BIT_MATH.h"
 #include"STD_TYPES.h"
+#include"BIT_MATH.h"
+#include"AVR_DIO_REG.h"
+
 
 
 

@@ -5,34 +5,30 @@
  *      Author: Laptop Market
  */
 
-#include"STD_TYPES.h"
+#include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "AVR_DIO_REG.h"
 #include "DIO_interface.h"
 #include "AVR_ADC_REG.h"
-#include "ADC_interface.h"
 #include "AVR_INTP_REG.h"
+#include "ADC_interface.h"
 
-#define Null 0
+#define Null (void*)0
 
-extern u32 au32_ChannelValues[8];
-extern u8 channel;
-volatile u8 ADC_Flag=0;
+u32 au16_ChannelValues[8]={0};
+u8 channel;
+
 
 #if ADC_INTP == ADC_INTP_ENABLE
 void __vector_16(void) __attribute__((signal,used));
 
 void __vector_16(void)
 {
-	static u8 channel;
 #if ADC_RES == ADC_8BIT_RES
 		//Save the value
-	au32_ChannelValues[channel]=ADCH;
-	channel++;
-	if(channel>7)
-		ADC_Flag=1;
+	au16_ChannelValues[channel]=ADCH;
 	#elif ADC_RES == ADC_10BIT_RES
-		au32_ChannelValues[channel] =ADCL | (((u16)ADCH)<<8);	//shifting left the ADCH to get the reading in one step
+		au16_ChannelValues[channel] =ADCL | (((u16)ADCH)<<8);	//shifting left the ADCH to get the reading in one step
 	#endif
 //		SET_BIT(ADCSRA,ADCSRA_ADIF);
 
@@ -134,11 +130,11 @@ void ADC_vidInit()
  *	input: channel num
  *	output: error state
  */
-u8 ADC_u8GetAdcReading(u8 COPY_u8Channel ,u32* COPY_pu8Value )
+u8 ADC_u8GetAdcReading(u8 COPY_u8Channel ,u16* COPY_pu16Value )
 {
 	u8 LOC_u8Err=0;
 
-	if(COPY_pu8Value==Null)
+	if(COPY_pu16Value==Null)
 	{
 		LOC_u8Err=1;
 	}else if(COPY_u8Channel>ADC_u8MAX_CH_NUM || COPY_u8Channel<0)
@@ -157,17 +153,16 @@ SET_BIT(ADCSRA,ADCSRA_ADSC);
 	while(!GET_BIT(ADCSRA,ADCSRA_ADIF));
 	#if ADC_RES == ADC_8BIT_RES
 		//Save the value
-		*COPY_pu8Value=ADCH;
+		*COPY_pu16Value=ADCH;
 	#elif ADC_RES == ADC_10BIT_RES
-		*COPY_pu8Value =ADCL | (((u16)ADCH)<<8);	//shifting left the ADCH to get the reading in one step
+		*COPY_pu16Value =ADCL | (((u16)ADCH)<<8);	//shifting left the ADCH to get the reading in one step
 	#endif
 	//Clear the flag
 	SET_BIT(ADCSRA,ADCSRA_ADIF);
 
 #elif ADC_INTP == ADC_INTP_ENABLE
-{	if(GET_BIT(ADCSRA,ADCSRA_ADIF))
-		*COPY_pu8Value=au32_ChannelValues[COPY_u8Channel];
-}
+	channel=COPY_u8Channel;
+	*COPY_pu16Value=au16_ChannelValues[channel];
 #endif
 	}
 	return LOC_u8Err;

@@ -2,11 +2,15 @@
  * INTERRUPT_interface.h
  *
  *  Created on: 2 Feb 2019
- *      Author: Laptop Market
+ *      Author: Mahmoud Sherif
  */
+
+
 
 #ifndef INTERRUPT_INTERFACE_H_
 #define INTERRUPT_INTERFACE_H_
+
+#include "STD_TYPES.h"
 
 // enabling and disabling interrupt
 #define INTP_ENABLE 1
@@ -18,9 +22,9 @@
 #define INTP_ON_CHANGE 2
 #define INTP_LOW_LEVEL 3
 
-#define INTP0_STATE INTP_DISABLE
+#define INTP0_STATE INTP_ENABLE
 #define INTP1_STATE INTP_DISABLE
-#define INTP2_STATE INTP_ENABLE
+#define INTP2_STATE INTP_DISABLE
 
 #define INTP0_EVENT_TYPE  INTP_FALLING_EGDE
 #define INTP1_EVENT_TYPE  INTP_FALLING_EGDE
@@ -115,5 +119,9 @@ void INTP_vidEnableGlobalInterrupt();
  */
 void INTP_vidDisbleGlobalInterrupt();
 
+
+void INTP_vidSetINTP0_func( void(*ptrFunc)() );
+void INTP_vidSetINTP1_func( void(*ptrFunc)() );
+void INTP_vidSetINTP2_func( void(*ptrFunc)() );
 
 #endif /* INTERRUPT_INTERFACE_H_ */

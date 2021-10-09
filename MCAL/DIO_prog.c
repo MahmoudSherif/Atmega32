@@ -9,7 +9,15 @@
 
 #include"DIO_interface.h"
 #define u8MAX_PIN_NB (u8)7
-#define Null (u8)0
+#define Null (void*)0
+
+/*
+ * SET PIN DIRECTION
+ * INPUT : PORT NUMBER
+ * PIN NUMBER
+ * DIRECTION
+ * OUTPUT : ERROT STATE
+ */
 
 u8 DIO_u8SetPinDirection(DIO_tenuPORTID COPY_enuPortID,
 		DIO_tenuPINID COPY_enuPinID, DIO_tenuDirection COPY_enuDirection)
@@ -105,6 +113,7 @@ u8 DIO_u8SetPinDirection(DIO_tenuPORTID COPY_enuPortID,
  * SET PIN VALUE
  * INPUT : PORT NUMBER
  * PIN NUMBER
+ * VALUE
  * OUTPUT : ERROT STATE
  */
 
@@ -328,8 +337,8 @@ u8 DIO_u8SetPortValue(DIO_tenuPORTID COPY_enuPortID,u8 COPY_u8Value)
 /*
  * GET PORT VALUE
  * INPUT: PORT NUMBER
- *	POINTER TO PORT VALUE
- * 	OUTPUT: ERROR STATE
+ * POINTER TO PORT VALUE
+ * OUTPUT: ERROR STATE
  *
  */
 u8 DIO_u8GetPortValue(DIO_tenuPORTID COPY_enuPortID,DIO_tenuValue* COPY_penuPortValue)

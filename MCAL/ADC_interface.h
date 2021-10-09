@@ -8,6 +8,12 @@
 #ifndef ADC_INTERFACE_H_
 #define ADC_INTERFACE_H_
 
+
+#include "STD_TYPES.h"
+
+
+
+
 #define LEFT_ADJ 0
 #define RIGHT_ADJ 1
 
@@ -56,7 +62,7 @@
 #define ADC_INTP   ADC_INTP_ENABLE
 
 
-#define ADC_REF	ADC_EXT_REF
+#define ADC_REF	ADC_AVCC
 
 #define ADC_u8MAX_CH_NUM (u8)7
 
@@ -75,6 +81,6 @@ void ADC_vidInit();
  *	input: channel num
  *	output: error state
  */
-u8 ADC_u8GetAdcReading(u8 COPY_u8Channel ,u32* COPY_pu8Value );
+u8 ADC_u8GetAdcReading(u8 COPY_u8Channel ,u16* COPY_pu16Value );
 
 #endif /* ADC_INTERFACE_H_ */
